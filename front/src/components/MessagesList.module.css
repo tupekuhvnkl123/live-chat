@@ -1,0 +1,11 @@
+.messagesList {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  width: 100%;
+  overflow-y: scroll;
+  height: 100%;
+}
+.messagesList::-webkit-scrollbar {
+  display: none;
+}
