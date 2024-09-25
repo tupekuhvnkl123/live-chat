@@ -1,4 +1,12 @@
 .container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  row-gap: 10px;
+}
+
+.inputContainer {
   background-color: #f5f6fa;
   display: flex;
   align-items: center;
@@ -9,6 +17,7 @@
   width: 100%;
   flex-shrink: 0;
 }
+
 .button {
   border: none;
   cursor: pointer;
@@ -21,4 +30,29 @@
   text-align: end;
   width: 100%;
   color: black;
+}
+
+.warningText {
+  color: red;
+  font-size: 13px;
+  margin-top: -10px;
+  animation: shake 0.3s;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }

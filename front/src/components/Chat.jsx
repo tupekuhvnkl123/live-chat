@@ -25,17 +25,15 @@ const Chat = () => {
   }, []);
 
   const handleMessageSend = (message, callback) => {
-    if (message.trim()) {
-      const messageData = {
-        name,
-        message,
-        userId: getUserId(),
-        userColor: getUserColor(),
-      };
-      socket.emit("sendMessage", messageData);
-      if (callback) {
-        callback();
-      }
+    const messageData = {
+      name,
+      message,
+      userId: getUserId(),
+      userColor: getUserColor(),
+    };
+    socket.emit("sendMessage", messageData);
+    if (callback) {
+      callback();
     }
   };
 

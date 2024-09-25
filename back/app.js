@@ -5,6 +5,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import Message from "./models/Message.js";
 import dotenv from "dotenv";
+import { violentWordsList } from "./utils/violent-filter.js";
 
 dotenv.config();
 const app = express();
@@ -35,13 +36,36 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error(err));
 
+const COOLDOWN_PERIOD = 10 * 1000; // 10 seconds
+const userLastMessageTime = {};
+
+const violentLanguage = (message) => {
+  return violentWordsList.some((word) => message.includes(word));
+};
+
 io.on("connection", (socket) => {
   socket.on("sendMessage", async (messageData) => {
+    const { name, message, userId } = messageData;
+
+    const currentTime = Date.now();
+    const lastMessageTime = userLastMessageTime[userId] || 0;
+    const inCooldown = currentTime - lastMessageTime < COOLDOWN_PERIOD;
+    if (
+      !name.trim() ||
+      !message.trim() ||
+      !userId ||
+      violentLanguage(message) ||
+      inCooldown
+    ) {
+      return; //! add error handling
+    }
+
     try {
       const newMessage = new Message(messageData);
       await newMessage.save();
-
       io.emit("receiveMessage", messageData);
+
+      userLastMessageTime[userId] = currentTime;
     } catch (error) {
       console.error("Error saving message:", error);
     }

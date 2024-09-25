@@ -12,6 +12,7 @@ const MessagesList = () => {
     queryKey: ["messages"],
     queryFn: fetchMessages,
   });
+
   const [messages, setMessages] = useState(initialMessages);
   const messagesEndRef = useRef(null);
 
