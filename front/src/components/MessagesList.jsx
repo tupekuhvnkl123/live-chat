@@ -44,8 +44,16 @@ const MessagesList = () => {
 
   if (isLoading) {
     return (
-      <div>
-        <HashLoader color={"#02043a"} />
+      <div className={S.emptyMessages}>
+        <HashLoader color={"#fff"} />
+      </div>
+    );
+  }
+
+  if (!initialMessages.length && !messages.length) {
+    return (
+      <div className={S.emptyMessages}>
+        <p>התחל צ&apos;אט</p>
       </div>
     );
   }

@@ -52,7 +52,7 @@ const ChatInput = ({ onSubmit }) => {
     <div className={S.container}>
       {showWarning && <p className={S.warningText}>!הקפד על שפה בוטה</p>}
       <div className={S.inputContainer}>
-        <button className={S.button} onClick={submitHandler}>
+        <button onClick={submitHandler}>
           <img src={sendIcon} alt="Send Icon" />
         </button>
         <input
@@ -62,7 +62,6 @@ const ChatInput = ({ onSubmit }) => {
             }
           }}
           type="text"
-          className={S.input}
           placeholder={timeLeft > 0 ? `חכה ${timeLeft} שניות` : "כתיבת תגובה"}
           value={message}
           onChange={({ target }) => setMessage(target.value)}

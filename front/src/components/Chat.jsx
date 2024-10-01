@@ -10,6 +10,7 @@ import {
   setUserName,
 } from "../utils/localStorageUtils";
 import MessagesList from "./MessagesList";
+import ChatTitle from "./ChatTitle";
 
 const Chat = () => {
   const [name, setName] = useState(getUserName() || "");
@@ -46,7 +47,7 @@ const Chat = () => {
 
   return (
     <div className={S.container}>
-      <h1>Welcome</h1>
+      <ChatTitle />
       <MessagesList />
       <ChatInput onSubmit={handleMessageSend} />
       {isNameModalOpen && (
