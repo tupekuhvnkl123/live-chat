@@ -55,6 +55,7 @@ io.on("connection", (socket) => {
       !message.trim() ||
       !userId ||
       violentLanguage(message) ||
+      violentLanguage(name) ||
       inCooldown
     ) {
       return; //! add error handling
