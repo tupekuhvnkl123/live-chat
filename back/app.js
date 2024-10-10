@@ -12,7 +12,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new socketIo(server, {
   cors: {
-    origin: "*",
+    origin: "*", //! change to now14
   },
 });
 
