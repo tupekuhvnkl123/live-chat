@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import Message from "./models/Message.js";
 import dotenv from "dotenv";
 import { violentWordsList } from "./utils/violent-filter.js";
+import ViolentWords from "./models/ViolentWords.js";
 
 dotenv.config();
 const app = express();
@@ -39,8 +40,25 @@ mongoose
 const COOLDOWN_PERIOD = 10 * 1000; // 10 seconds
 const userLastMessageTime = {};
 
-const violentLanguage = (message) => {
-  return violentWordsList.some((word) => message.includes(word));
+const violentLanguage = async (message, name) => {
+  try {
+    const dbViolentWords = await ViolentWords.findOne({
+      name: "violent-words",
+    });
+
+    if (!dbViolentWords) {
+      throw new Error("Something went wrong");
+    }
+
+    const dbNotValid = dbViolentWords.list.some(
+      (word) => message.includes(word) || name.includes(word)
+    );
+
+    if (dbNotValid) return true;
+    return false;
+  } catch (error) {
+    return error;
+  }
 };
 
 io.on("connection", (socket) => {
@@ -50,12 +68,13 @@ io.on("connection", (socket) => {
     const currentTime = Date.now();
     const lastMessageTime = userLastMessageTime[userId] || 0;
     const inCooldown = currentTime - lastMessageTime < COOLDOWN_PERIOD;
+    const languageIsViolent = await violentLanguage(message, name);
+
     if (
       !name.trim() ||
       !message.trim() ||
       !userId ||
-      violentLanguage(message) ||
-      violentLanguage(name) ||
+      languageIsViolent ||
       inCooldown
     ) {
       return; //! add error handling
